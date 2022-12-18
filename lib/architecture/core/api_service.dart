@@ -1,5 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:restapi_flutter/architecture/constants/api_constants.dart';
+import 'package:restapi_flutter/architecture/core/dio_exception.dart';
+
+final apiServiceprovider = Provider<ApiService>((ref) => ApiService());
 
 class ApiService {
   getData({required String ednpoint}) async {
@@ -9,7 +13,7 @@ class ApiService {
       final result = await dio.get(ednpoint);
       return result.data;
     } on DioError catch (e) {
-      print(e.toString());
+      throw DioException.fromDioError(e);
     }
   }
 }
